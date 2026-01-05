@@ -7,19 +7,19 @@ export default function Info(){
       <div className="mt-4 space-y-4">
         <div>
           <h3 className="font-semibold">Datum & tid</h3>
-          <p>12 juni 2026 — Ceremoni kl. 15:00</p>
+          <p>5e september 2026 — Ceremoni kl. 14:00</p>
         </div>
         <div>
           <h3 className="font-semibold">Plats</h3>
-          <p>Stora Gården — <a className="text-forest" href="https://www.google.com/maps">Visa på karta</a></p>
+          <p> Vårdnäs Stiftsgård Hotell och Konferens — <a className="text-forest" href="https://maps.app.goo.gl/pRZX4wSHQJpGgmEe9">Visa på karta</a></p>
         </div>
         <div>
           <h3 className="font-semibold">Klädkod</h3>
-          <p>Smart casual — sommarvänligt</p>
+          <p>Mörk kostym - Undrar du vad mörk kostym betyder? Klicka här för att läsa mer.</p>
         </div>
         <div>
           <h3 className="font-semibold">Schema</h3>
-          <p>Ceremoni 15:00, Mingel 17:00, Middag 19:00</p>
+          <p>Ceremoni 14:00 i Vårdnäs kyrka, Mingel 15:00, Middag 17:00</p>
         </div>
       </div>
     </Layout>
