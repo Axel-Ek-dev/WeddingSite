@@ -1,0 +1,22 @@
+[
+  {
+    "id": "g1",
+    "name": "Blender",
+    "description": "High-speed blender for smoothies and soups.",
+    "imageUrl": "",
+    "link": "",
+    "reserved": false,
+    "reservedBy": null,
+    "createdAt": "2026-01-04T00:00:00Z"
+  },
+  {
+    "id": "g2",
+    "name": "Dinner Set",
+    "description": "Classic 12-piece porcelain dinner set.",
+    "imageUrl": "",
+    "link": "",
+    "reserved": false,
+    "reservedBy": null,
+    "createdAt": "2026-01-04T00:00:00Z"
+  }
+]
