@@ -18,6 +18,8 @@ type FormData = z.infer<typeof schema>
 
 export default function RSVP(){
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({ resolver: zodResolver(schema), defaultValues: { attending: 'yes', guestCount: 1 } })
 
   async function onSubmit(values: FormData){
@@ -29,8 +31,17 @@ export default function RSVP(){
       mealPreference: values.mealPreference ?? null,
       notes: values.notes ?? null
     }
-    await data.saveRsvp(payload)
-    setSubmitted(true)
+    setSubmitting(true)
+    setSubmitError(null)
+    try {
+      await data.saveRsvp(payload)
+      setSubmitted(true)
+    } catch (err) {
+      console.error('Failed to save RSVP', err)
+      setSubmitError('Misslyckades att skicka OSA. Försök igen.')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (submitted) return (
@@ -78,15 +89,18 @@ export default function RSVP(){
             <option value="no">Nej</option>
           </select>
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium">Meddelande (valfritt)</label>
           <textarea className="mt-1 block w-full border rounded p-2" {...register('notes')} />
         </div>
 
         <div>
-          <button type="submit" className="bg-forest text-white px-4 py-2 rounded">Skicka OSA</button>
+          <button type="submit" disabled={submitting} className="bg-forest text-white px-4 py-2 rounded disabled:opacity-60">
+            {submitting ? 'Skickar…' : 'Skicka OSA'}
+          </button>
         </div>
+        {submitError && <p className="text-red-600 mt-2">{submitError}</p>}
       </form>
     </Layout>
   )
