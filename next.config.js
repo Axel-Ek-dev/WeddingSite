@@ -1,13 +1,13 @@
 /** @type {import('next').NextConfig} */
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ? process.env.NEXT_PUBLIC_BASE_PATH : undefined
+/** @type {import('next').NextConfig} */ const repoBasePath = process.env.NEXT_PUBLIC_BASE_PATH || (process.env.GITHUB_PAGES ? '/WeddingSite' : undefined)
+
 const nextConfig = {
   reactStrictMode: true,
-  // Ensure exported pages use directory style (e.g. /rsvp/index.html) so GitHub Pages serves /rsvp without a server
+  // Ensure exported pages use directory style (e.g. /rsvp/index.html)
   trailingSlash: true,
-  // Optional base path for GitHub Pages (set to "/repo-name" during CI deploy if required)
-  basePath,
-  // Use a more compatible expression instead of `??` to avoid parse errors on older Node versions in CI
-  assetPrefix: basePath || undefined,
+  basePath: repoBasePath || undefined,
+  // Use explicit assetPrefix when basePath is set so exported assets reference correct path
+  assetPrefix: repoBasePath || undefined,
 }
 
 module.exports = nextConfig
