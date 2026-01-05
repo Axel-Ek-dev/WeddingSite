@@ -6,7 +6,8 @@ const nextConfig = {
   trailingSlash: true,
   // Optional base path for GitHub Pages (set to "/repo-name" during CI deploy if required)
   basePath,
-  assetPrefix: basePath ?? undefined,
+  // Use a more compatible expression instead of `??` to avoid parse errors on older Node versions in CI
+  assetPrefix: basePath || undefined,
 }
 
 module.exports = nextConfig
