@@ -2,6 +2,7 @@ import Layout from '../../components/Layout'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { data, RSVP, Gift } from '../../lib/data'
+import { getSupabaseClient } from '../../lib/supabase'
 
 function download(filename: string, content: string){
   const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' })
@@ -20,35 +21,64 @@ export default function Dashboard(){
   const [loading, setLoading] = useState(true)
 
   useEffect(()=>{
-    const auth = localStorage.getItem('admin_auth')
-    if (!auth) {
-      router.replace('./admin/login')
-      return
-    }
-    async function load(){
-      try {
-        const r = await data.listRsvps()
-        const g = await data.listGifts()
-        // override with demo storage if set
-        const demoG = localStorage.getItem('demo_gifts')
-        if (demoG) {
-          try{ setGifts(JSON.parse(demoG)) } catch { setGifts(g) }
-        } else setGifts(g)
-        setRsvps(r)
-      } catch (err) {
-        console.error('Failed to load admin data:', err)
-        setRsvps([])
-        setGifts([])
-      } finally {
-        setLoading(false)
+    async function checkAuthAndLoad(){
+      const SUPABASE = getSupabaseClient()
+      // If Supabase is configured, require a session
+      if (SUPABASE) {
+        try {
+          const { data: sessionData } = await SUPABASE.auth.getSession()
+          if (!sessionData?.session) {
+            router.replace('/admin/login')
+            return
+          }
+        } catch (err) {
+          console.error('Auth check failed:', err)
+          router.replace('/admin/login')
+          return
+        }
+      } else {
+        // Fallback demo auth using localStorage
+        const auth = localStorage.getItem('admin_auth')
+        if (!auth) {
+          router.replace('./admin/login')
+          return
+        }
       }
+
+      async function load(){
+        try {
+          const r = await data.listRsvps()
+          const g = await data.listGifts()
+          // override with demo storage if set
+          const demoG = localStorage.getItem('demo_gifts')
+          if (demoG) {
+            try{ setGifts(JSON.parse(demoG)) } catch { setGifts(g) }
+          } else setGifts(g)
+          setRsvps(r)
+        } catch (err) {
+          console.error('Failed to load admin data:', err)
+          setRsvps([])
+          setGifts([])
+        } finally {
+          setLoading(false)
+        }
+      }
+      load()
     }
-    load()
+
+    checkAuthAndLoad()
   },[])
 
   function exportCsv(){
     const headers = ['id','name','email','attending','guestCount','mealPreference','notes','createdAt']
-    const rows = rsvps.map(r => [r.id, r.name, r.email, String(r.attending), String(r.guestCount), r.mealPreference || '', r.notes || '', r.createdAt])
+    const rows = rsvps.map(r => {
+      const anyR: any = r as any
+      const guestCount = anyR.guestCount ?? anyR.guest_count ?? ''
+      const meal = anyR.mealPreference ?? anyR.meal_preference ?? ''
+      const created = anyR.createdAt ?? anyR.created_at ?? ''
+      const attending = anyR.attending ?? anyR.attending ?? ''
+      return [anyR.id ?? '', anyR.name ?? '', anyR.email ?? '', String(attending), String(guestCount), meal || '', anyR.notes || '', created]
+    })
     const csv = [headers.join(','), ...rows.map(r=> r.map(c=> '"'+String(c).replace(/"/g,'""')+'"').join(','))].join('\n')
     download('rsvps.csv', csv)
   }
