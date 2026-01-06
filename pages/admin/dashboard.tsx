@@ -70,14 +70,15 @@ export default function Dashboard(){
   },[])
 
   function exportCsv(){
-    const headers = ['id','name','email','attending','guestCount','mealPreference','notes','createdAt']
+    const headers = ['id','name','email','attending','guestCount','speech','mealPreference','notes','createdAt']
     const rows = rsvps.map(r => {
       const anyR: any = r as any
       const guestCount = anyR.guestCount ?? anyR.guest_count ?? ''
+      const speech = anyR.speech ?? ''
       const meal = anyR.mealPreference ?? anyR.meal_preference ?? ''
       const created = anyR.createdAt ?? anyR.created_at ?? ''
       const attending = anyR.attending ?? anyR.attending ?? ''
-      return [anyR.id ?? '', anyR.name ?? '', anyR.email ?? '', String(attending), String(guestCount), meal || '', anyR.notes || '', created]
+      return [anyR.id ?? '', anyR.name ?? '', anyR.email ?? '', String(attending), String(guestCount), String(speech), meal || '', anyR.notes || '', created]
     })
     const csv = [headers.join(','), ...rows.map(r=> r.map(c=> '"'+String(c).replace(/"/g,'""')+'"').join(','))].join('\n')
     download('rsvps.csv', csv)

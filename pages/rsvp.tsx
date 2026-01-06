@@ -10,6 +10,7 @@ const schema = z.object({
   email: z.string().email('Ogiltig e-postadress'),
   attending: z.string(),
   guestCount: z.number().min(0).max(10).optional(),
+  speech: z.string().optional(),
   mealPreference: z.string().optional(),
   notes: z.string().optional()
 })
@@ -28,6 +29,7 @@ export default function RSVP(){
       email: values.email,
       attending: values.attending === 'yes',
       guestCount: values.guestCount ?? 1,
+      speech: values.speech === 'yes',
       mealPreference: values.mealPreference ?? null,
       notes: values.notes ?? null
     }
@@ -89,6 +91,14 @@ export default function RSVP(){
             <option value="vegetarian">Vegetarisk</option>
             <option value="vegan">Vegansk</option>
             <option value="other">Annat (specifiera i Meddelande)</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium">Vill du hålla tal?</label>
+          <select {...register('speech')} className="mt-1 block w-full border rounded p-2">
+            <option value="no">Nej</option>
+            <option value="yes">Ja</option>
           </select>
         </div>
 

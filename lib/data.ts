@@ -6,6 +6,7 @@ export type RSVP = {
   email: string
   attending: boolean
   guestCount: number
+  speech?: boolean | null
   mealPreference?: string | null
   notes?: string | null
   createdAt: string
@@ -42,6 +43,7 @@ function mapRsvp(row: any): RSVP {
     email: row.email,
     attending: !!row.attending,
     guestCount: row.guestCount ?? row.guest_count ?? 0,
+    speech: row.speech ?? null,
     mealPreference: row.mealPreference ?? row.meal_preference ?? null,
     notes: row.notes ?? null,
     createdAt: row.createdAt ?? row.created_at ?? new Date().toISOString()
@@ -93,6 +95,7 @@ export const data = {
           email: payload.email,
           attending: payload.attending,
           guest_count: payload.guestCount,
+          speech: payload.speech ?? null,
           // meal_preference is omitted because the table does not have that column by default
           notes: payload.notes ?? null
         }
