@@ -11,7 +11,7 @@ export default function Home() {
         <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 -mt-16 justify-items-center">
           <InfoCard icon={<span>📅</span>} title="När" description={<span>5e september 2026 — Ceremoni kl. 14:00</span>} />
           <InfoCard icon={<span>📍</span>} title="Var" description={<span>Vårdnäs Stiftsgård Hotell och Konferens <a className='text-forest' href='https://maps.app.goo.gl/pRZX4wSHQJpGgmEe9'>Visa på karta</a></span>} />
-          <InfoCard icon={<span>👗</span>} title="Klädkod" description={<span>Mörk kostym - Undrar du vad mörk kostym betyder? Klicka här för att läsa mer.</span>} />
+          <InfoCard icon={<span>👗</span>} title="Klädkod" description={<span>Mörk kostym - Undrar du vad mörk kostym betyder? <a className='text-forest' href='https://maps.app.goo.gl/pRZX4wSHQJpGgmEe9'>Visa på kartaKlicka här för att läsa mer.</a></span>} />
         </div>
       </section>
 
