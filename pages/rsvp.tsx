@@ -99,7 +99,7 @@ export default function RSVP(){
 
         <div>
           <button type="submit" disabled={submitting} className="bg-forest text-white px-4 py-2 rounded disabled:opacity-60">
-            {submitting ? 'Skickar…' : 'Skicka OSA'}
+            {submitting ? 'Skickar… ' : 'Skicka OSA'}
           </button>
         </div>
         {submitError && <p className="text-red-600 mt-2">{submitError}</p>}
