@@ -49,7 +49,7 @@ export default function Registry(){
   }
 
   return (
-    <Layout title="Önskelista">
+    <Layout title="Önskelista ">
       <h1 className="text-2xl font-semibold">Önskelista</h1>
       {loading ? <p className="mt-4">Laddar…</p> : (
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
